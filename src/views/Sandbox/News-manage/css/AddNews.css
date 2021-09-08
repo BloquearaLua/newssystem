@@ -1,0 +1,13 @@
+.stepsButtons{
+    margin-top: 20px;
+}
+
+.hiddenForm{
+    display: none;
+}
+.showForm{
+    margin-top: 40px;
+}
+.stepBtn{
+    margin-right: 10px;
+}

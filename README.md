@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+# 全球新闻发布管理系统
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+项目主要使用react-hook，用json-server模拟数据。
 
-## Available Scripts
+包括：首页，用户管理，权限管理，新闻管理，审核管理，发布管理。
+其中首页可进行可视化查看发过的数据。
 
-In the project directory, you can run:
+## 安装
 
-### `npm start`
+### json-server
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+    npm i json-server
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 打开服务器
 
-### `npm test`
+在db.json文件的文件夹下，打开终端,输入：
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+	json-server --watch db.json --port 5000
 
-### `npm run build`
+#### 使用
+	
+1. 获取数据
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+        axios.get("http://localhost:8000/posts/1").then(resolve => {
+    		console.log(resolve.data);
+    	});
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. 查看数据，id自增
+	
+	     axios.post("http://localhost:8000/comments", {
+    	 	title: "test01",
+    	 	author: "my",
+    	 	body: "omg...",
+    		postId: 2
+         });
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. 修改内容，替换修改，put里面的对象会直接代替comment里id为2的
+    
+     	axios.put("http://localhost:8000/comments/2", {
+     		title: "change"
+     	})
 
-### `npm run eject`
+4. 修改内容，局部修改，修改对象里对应的内容，其它不变
+		 
+		axios.patch("http://localhost:8000/comments/2", {
+             title:"change2",
+             postId:2
+         })
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+5. 删除
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+		axios.delete("http://localhost:8000/comments/3")
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+6. _embed，向下合并表
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+		axios.get("http://localhost:8000/posts?_embed=comments").then(res => {
+             console.log(res.data);
+        })
 
-## Learn More
+7. _expand,向上合并
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+		axios.get("http://localhost:8000/comments?_expand=post").then(res => {
+             console.log(res.data);
+         })
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

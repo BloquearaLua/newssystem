@@ -28,22 +28,6 @@ import {connect} from 'react-redux'
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-// 模拟后台传回来的数据结构
-// 这里key传为路径，方便点击，且唯一
-// const menuList = [
-//     { key: "/home", title: "首页", icon: <UserOutlined/> },
-//     {
-//         key: "/user-manager", title: "用户权限", icon: <UserOutlined/>,
-//         children: [{key: "/user-manager/list", title: "用户列表", icon: <UserOutlined/>}]
-//     },
-//     {
-//         key: "/right-manager", title: "权限管理", icon: <UserOutlined/>,
-//         children: [{ key: "/role-manager/list", title: "角色列表", icon: <UserOutlined /> },
-//                 { key: "/right-manager/list", title: "权限列表", icon: <UserOutlined /> },
-//             ]
-//     },
-// ]
-
 // 后台返回的接口数据没图标，设置图标数组
 const iconList = {
     '/home': < HomeOutlined/ > ,
@@ -73,10 +57,8 @@ function SideMenu(props) {
 
     // 获取接口数据并设置状态
     useEffect(() => {
-        // 通过axiso获取接口数据
         axios.get("/rights?_embed=children").then(res => {
             // console.log(res.data);
-            // 设置menuList的状态为返回回来的接口数据
             setMenuList(res.data);
         })
     }, []);
@@ -88,12 +70,11 @@ function SideMenu(props) {
     const renderMenu = (menuList) => {
         // 遍历menuList，渲染侧边栏导航
         return menuList.map((one) => {
-            // console.log(1);
             // 如果存在子节点且为左菜单项，那么就返回SubMenu
             if (one.children?.length > 0 && ifPagepermisson(one)) {
                 return <SubMenu key = { one.key }
                             icon = { iconList[one.key] }
-                            title = { one.title } > { /* 使用遍历的方式渲染子节点 */ } 
+                            title = { one.title } > {
                             { renderMenu(one.children) } 
                         </SubMenu>
             }

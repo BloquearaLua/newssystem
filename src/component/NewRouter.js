@@ -48,17 +48,10 @@ function NewRouter(props) {
             setBackRouteList([...res[0].data, ...res[1].data]);
         })
     }, []);
-    // const ps = new PerfectScrollbar('#container', {
-    //     wheelSpeed: 2,
-    //     wheelPropagation: true,
-    //     minScrollbarLength: 20
-    //     });
     
     const { role:{rights} } = JSON.parse(localStorage.getItem("token"));
     // 查看是否有路由权限
     const checkRoute = item => {
-        // RouterMap[item]：该路径是否是包含在映射里的
-        // item.pagepermission：是否在左菜单栏显示
         return RouteMap[item.key] && (item.pagepermisson || item.routepermisson);
     };
     // 用户是否有访问权限
@@ -82,9 +75,6 @@ function NewRouter(props) {
                     <Redirect from='/' to='/home' exact />
                 {/* 如果路径写错了，即上面都没走，就跳转到404/403页面 */}
                 {
-                    // 在backRouteList的长度不为0时，再渲染没有权限那个页面，
-                    // 要不然上面刷新后前几秒会出现这个页面，因为backRouteList一开始为空数组，
-                    // 还没取完数据，就会跳到没权限这里
                     backRouteList.length > 0 && <Route path='*' component={NoPermission}/>  
                 }
             </Switch>
